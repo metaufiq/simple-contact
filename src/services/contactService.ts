@@ -3,12 +3,14 @@ import ContactType from "../config/types/domain/ContactType";
 
 const list = async ()=>{
     const res = await service.Contact.get('');
-    return res.data; 
+    console.log(res);
+    
+    return res.data.data; 
 }
 
 const add = async (params: ContactType)=>{
     const res = await service.Contact.post('', params);
-    return res.data; 
+    return res.data.data; 
 }
 
 const edit = async (params: ContactType)=>{
@@ -19,12 +21,12 @@ const edit = async (params: ContactType)=>{
         age: params.age,
     }
     const res = await service.Contact.put(`/${params.id}`, data);
-    return res.data; 
+    return res.data.data; 
 }
 
 const remove = async (params: ContactType['id'])=>{
     const res = await service.Contact.delete(`/${params}`);
-    return res.data; 
+    return res.data.data; 
 }
 
 const contactService = {

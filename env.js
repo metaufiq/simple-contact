@@ -1,4 +1,4 @@
-const BASE_URL = 'https://simple-contact-crud.herokuapp.com/'
+const BASE_URL = 'https://simple-contact-crud.herokuapp.com'
 
 const env = {
     BASE_URL
