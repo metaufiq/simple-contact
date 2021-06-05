@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import CustomTextInput from "../atoms/CustomTextInput";
 import ContactType from "../../config/types/domain/ContactType";
 import Avatar from "../atoms/Avatar";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface mainProps {
     navigation: StackNavigationProp<any, any>;
@@ -17,35 +18,38 @@ const ContactDetail = (props: mainProps) => {
     const [firstName, setFirstName] = useState(contact && contact.firstName);
     const [lastName, setLastName] = useState(contact && contact.lastName);
     const [age, setAge] = useState(contact && contact.age.toString());
+
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.avatarContainer}>
-                <Avatar
-                    type="url"
-                    size={100}
-                    value={contact?.photo} />
-            </View>
-            <CustomTextInput
-                title="Photo (url)"
-                onChangeText={setPhoto}
-                value={photo}
-            />
-            <CustomTextInput
-                title="First Name"
-                onChangeText={setFirstName}
-                value={firstName}
-            />
-            <CustomTextInput
-                title="Last Name"
-                onChangeText={setLastName}
-                value={lastName}
-            />
-            <CustomTextInput
-                title="Age"
-                keyboardType="numeric"
-                onChangeText={setAge}
-                value={age}
-            />
+            <ScrollView>
+                <View style={styles.avatarContainer}>
+                    <Avatar
+                        type="url"
+                        size={100}
+                        value={contact?.photo} />
+                </View>
+                <CustomTextInput
+                    title="Photo (url)"
+                    onChangeText={setPhoto}
+                    value={photo}
+                />
+                <CustomTextInput
+                    title="First Name"
+                    onChangeText={setFirstName}
+                    value={firstName}
+                />
+                <CustomTextInput
+                    title="Last Name"
+                    onChangeText={setLastName}
+                    value={lastName}
+                />
+                <CustomTextInput
+                    title="Age"
+                    keyboardType="numeric"
+                    onChangeText={setAge}
+                    value={age}
+                />
+            </ScrollView>
         </View>
     )
 }
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         alignContent: 'center'
     },
-    avatarContainer:{
+    avatarContainer: {
         paddingVertical: 20
     }
 })
