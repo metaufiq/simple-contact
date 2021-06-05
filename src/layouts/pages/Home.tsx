@@ -56,7 +56,7 @@ interface mainProps {
       <FlatList
         data={contacts}
         renderItem={renderContactCard}
-        keyExtractor={(key)=>key.id}
+        keyExtractor={(key)=>key.id!}
       />
       <FAB onClick={onAddContact}></FAB>
     </View>

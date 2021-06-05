@@ -8,7 +8,9 @@ const list = async ()=>{
 }
 
 const add = async (params: ContactType)=>{
+    delete params.id;
     const res = await service.Contact.post('', params);
+    
     return res.data.data; 
 }
 

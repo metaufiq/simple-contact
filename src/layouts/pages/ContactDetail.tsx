@@ -8,6 +8,8 @@ import Avatar from "../atoms/Avatar";
 import { ScrollView } from "react-native-gesture-handler";
 import BottomButtonCard from "../molecules/BottomButtonCard";
 import contactService from "../../services/contactService";
+import { useThunkDispatch } from "../../utils/hooks";
+import contactAction from "../../actions/contactAction";
 
 interface routeParams { contact?: ContactType, type: 'add' | 'edit' }
 interface mainProps {
@@ -22,7 +24,8 @@ const ContactDetail = (props: mainProps) => {
     const [lastName, setLastName] = useState(contact && contact.lastName);
     const [age, setAge] = useState(contact && contact.age.toString());
     const label = props.route.params.type === 'edit' ? 'EDIT CONTACT' : 'ADD CONTACT'
-    
+    const dispatch = useThunkDispatch();
+
     const onSubmit = async () => {
         try {
             const data: ContactType = {
@@ -30,15 +33,26 @@ const ContactDetail = (props: mainProps) => {
                 firstName: firstName!,
                 lastName: lastName!,
                 photo: photo!,
-                id: contact!.id
+                id: contact?.id
             }
-            
-            const res = props.route.params.type === 'edit' ? await contactService.edit(data) : contactService.add(data);
-            
+            switch (props.route.params.type) {
+                case 'edit':
+                    await contactService.edit(data)
+                    break;
+                case 'add':
+                    await contactService.add(data)
+                    break;
+
+                default:
+                    break;
+            }
+            await dispatch(contactAction.getList());
+            props.navigation.goBack()
         } catch (error) {
+
             Alert.alert(
-                "Error",
-                error
+                "Oops,There Is Some Error",
+                error.message
             );
         }
     }
@@ -74,9 +88,9 @@ const ContactDetail = (props: mainProps) => {
                 />
             </ScrollView>
             <BottomButtonCard
-                    label={label}
-                    onClick={onSubmit}
-                ></BottomButtonCard>
+                label={label}
+                onClick={onSubmit}
+            ></BottomButtonCard>
         </View>
     )
 }

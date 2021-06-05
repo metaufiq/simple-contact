@@ -1,24 +1,29 @@
 import {AxiosError, AxiosInstance} from 'axios';
 
 const handleError = (error: AxiosError) => {
-  const data = {data: undefined, errorMessage: '', status: 400, isError: true};
+  let errorMessage = ''
+  
   if (error.message) {
     if (error.response) {
       // Request made and server responded
-      data.errorMessage = error.response.data
+      errorMessage = error.response.data
     } else if (error.request) {
       // The request was made but no response was received
-      data.errorMessage = error.request
+      errorMessage = error.request
     } else {
-      data.errorMessage = error.message
+      errorMessage = error.message
     }
+    
+    
   }
-  return {data};
+  
+  throw new Error(errorMessage);
 };
 
 const setInterceptor = (serv: AxiosInstance) => {
   serv.interceptors.response.use(
     function (_response) {
+      
       // Do something with response data
       return _response;
     },

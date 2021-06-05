@@ -3,9 +3,6 @@ import contactService from '../services/contactService';
 
 const getList = createAsyncThunk('contact/list', async (params, thunkAPI) => {
     const contacts = await contactService.list();
-    if (!contacts) {
-        return thunkAPI.rejectWithValue('error');
-    }
     return{
         contactList: contacts
     }
