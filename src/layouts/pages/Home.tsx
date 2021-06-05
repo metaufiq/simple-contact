@@ -39,8 +39,8 @@ interface mainProps {
     getContacts();
    },[]);
 
-   const onChooseContact = ()=>{
-       props.navigation.push('ContactDetail');
+   const onChooseContact = (contact:ContactType)=>{
+       props.navigation.push('ContactDetail', {contact});
    }
    const onAddContact = ()=>{
         props.navigation.push('ContactDetail');

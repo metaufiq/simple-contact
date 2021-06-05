@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, TextInputProps, View } from "react-native"
 
 
 interface mainProps extends TextInputProps{
-    title: string
+    title: string,
 }
 const CustomTextInput = (props: mainProps)=>{
 
@@ -11,6 +11,7 @@ const CustomTextInput = (props: mainProps)=>{
 
     const onChangeText = (input:string)=>{
         setInput(input)
+        props.onChangeText!(input)
     }
     return (
         <View style={styles.mainContainer}>
