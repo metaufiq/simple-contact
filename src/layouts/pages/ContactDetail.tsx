@@ -10,7 +10,8 @@ import BottomButtonCard from "../molecules/BottomButtonCard";
 import contactService from "../../services/contactService";
 import { useThunkDispatch } from "../../utils/hooks";
 import contactAction from "../../actions/contactAction";
-
+import IconButton from "../atoms/IconButton";
+import Icon from 'react-native-vector-icons/EvilIcons';
 interface routeParams { contact?: ContactType, type: 'add' | 'edit' }
 interface mainProps {
     navigation: StackNavigationProp<any, any>;
@@ -56,6 +57,19 @@ const ContactDetail = (props: mainProps) => {
             );
         }
     }
+    const onDelete = async () => {
+        try {
+            await contactService.remove(contact?.id)
+            await dispatch(contactAction.getList());
+            props.navigation.goBack()
+
+        } catch (error) {
+            Alert.alert(
+                "Oops,There Is Some Error",
+                error.message
+            );
+        }
+    }
     return (
         <View style={styles.mainContainer}>
             <ScrollView>
@@ -86,6 +100,14 @@ const ContactDetail = (props: mainProps) => {
                     onChangeText={setAge}
                     value={age}
                 />
+                <View style={{alignContent:'center',width:'100%'}}>
+                    <IconButton
+                        size={60}
+                        icon={<Icon size={30} name="trash" color="red" ></Icon>}
+                        onClick={onDelete} title="Hapus Data?"
+                        color="red"/>
+                </View>
+
             </ScrollView>
             <BottomButtonCard
                 label={label}
