@@ -12,6 +12,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
  import {
+   Alert,
    FlatList,
      StyleSheet,
    View,
@@ -24,6 +25,7 @@ import { RootType } from '../../store';
 import { useThunkDispatch } from '../../utils/hooks';
 import FAB from '../atoms/FAB';
 import ContactCard from '../molecules/ContactCard';
+import LoadingModal from '../molecules/LoadingModal';
 
 interface mainProps {
     navigation: StackNavigationProp<any, any>;
@@ -32,9 +34,21 @@ interface mainProps {
  const Home = (props: mainProps) => {
    const contacts = useSelector((state:RootType)=> state.contactReducer.contactList);
    const dispatch  = useThunkDispatch();
-   const getContacts = async ()=>{
+   const [loading, setLoading] = useState(true);
 
-    await dispatch(contactAction.getList());
+   const getContacts = async ()=>{
+     try {
+      await dispatch(contactAction.getList());
+      setLoading(false)
+       
+     } catch (error) {
+      setLoading(false)
+
+      Alert.alert(
+          "Oops,There Is Some Error",
+          error.message
+      );       
+     }
    }
 
 
@@ -53,6 +67,7 @@ interface mainProps {
   };
    return (
     <View style={styles.mainContainer}>
+      <LoadingModal visible={loading}></LoadingModal>
       <FlatList
         data={contacts}
         renderItem={renderContactCard}

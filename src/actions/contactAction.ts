@@ -5,7 +5,8 @@ const getList = createAsyncThunk('contact/list', async (params, thunkAPI) => {
     const contacts = await contactService.list();
     return{
         contactList: contacts
-    }
+    }   
+
 });
 
 const contactAction = {
