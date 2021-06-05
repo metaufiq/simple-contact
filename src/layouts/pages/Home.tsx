@@ -34,15 +34,15 @@ interface mainProps {
  const Home = (props: mainProps) => {
    const contacts = useSelector((state:RootType)=> state.contactReducer.contactList);
    const dispatch  = useThunkDispatch();
-   const [loading, setLoading] = useState(true);
+   const [refresh, setRefresh] = useState(true);
 
    const getContacts = async ()=>{
      try {
       await dispatch(contactAction.getList());
-      setLoading(false)
+      setRefresh(false)
        
      } catch (error) {
-      setLoading(false)
+      setRefresh(false)
 
       Alert.alert(
           "Oops,There Is Some Error",
@@ -67,9 +67,10 @@ interface mainProps {
   };
    return (
     <View style={styles.mainContainer}>
-      <LoadingModal visible={loading}></LoadingModal>
       <FlatList
         data={contacts}
+        onRefresh={getContacts}
+        refreshing={refresh}
         renderItem={renderContactCard}
         keyExtractor={(key)=>key.id!}
       />
