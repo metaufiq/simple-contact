@@ -13,6 +13,7 @@ import contactAction from "../../actions/contactAction";
 import IconButton from "../atoms/IconButton";
 import Icon from 'react-native-vector-icons/EvilIcons';
 import LoadingModal from "../molecules/LoadingModal";
+import axios from "axios";
 interface routeParams { contact?: ContactType, type: 'add' | 'edit' }
 interface mainProps {
     navigation: StackNavigationProp<any, any>;
@@ -29,6 +30,17 @@ const ContactDetail = (props: mainProps) => {
     const label = props.route.params.type === 'edit' ? 'EDIT CONTACT' : 'ADD CONTACT'
     const dispatch = useThunkDispatch();
 
+    const checkAndReplacePhoto = async ()=>{
+        let newPhoto = 'N/A'
+        try {
+            await axios.get(photo!)
+            newPhoto = photo!
+        } catch (error) {
+            console.log("photo doesn`t exist!");
+        }
+
+        return newPhoto
+    }
     const onSubmit = async () => {
         try {
             setLoading(true)
@@ -36,7 +48,7 @@ const ContactDetail = (props: mainProps) => {
                 age: parseInt(age!),
                 firstName: firstName!,
                 lastName: lastName!,
-                photo: photo!,
+                photo: await checkAndReplacePhoto(),
                 id: contact?.id
             }
             switch (props.route.params.type) {
