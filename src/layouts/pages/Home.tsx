@@ -18,6 +18,7 @@ import React, { useEffect, useState } from 'react';
  } from 'react-native';
 import ContactType from '../../config/types/domain/ContactType';
 import contactService from '../../services/contactService';
+import FAB from '../atoms/FAB';
 import ContactCard from '../molecules/ContactCard';
 
 interface mainProps {
@@ -41,6 +42,9 @@ interface mainProps {
    const onChooseContact = ()=>{
        props.navigation.push('ContactDetail');
    }
+   const onAddContact = ()=>{
+        props.navigation.push('ContactDetail');
+   }
    const renderContactCard = ({item, index}: {item: ContactType; index: number}) => {
     return <ContactCard data={item} key={index} onClick={onChooseContact} />;
   };
@@ -51,6 +55,7 @@ interface mainProps {
         renderItem={renderContactCard}
         keyExtractor={(key)=>key.id}
       />
+      <FAB onClick={onAddContact}></FAB>
     </View>
    );
  };
