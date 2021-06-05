@@ -12,6 +12,7 @@ import { useThunkDispatch } from "../../utils/hooks";
 import contactAction from "../../actions/contactAction";
 import IconButton from "../atoms/IconButton";
 import Icon from 'react-native-vector-icons/EvilIcons';
+import LoadingModal from "../molecules/LoadingModal";
 interface routeParams { contact?: ContactType, type: 'add' | 'edit' }
 interface mainProps {
     navigation: StackNavigationProp<any, any>;
@@ -19,6 +20,7 @@ interface mainProps {
 }
 const ContactDetail = (props: mainProps) => {
 
+    const [loading, setLoading] = useState(false);
     const contact = props.route.params?.contact;
     const [photo, setPhoto] = useState(contact && contact.photo);
     const [firstName, setFirstName] = useState(contact && contact.firstName);
@@ -29,6 +31,7 @@ const ContactDetail = (props: mainProps) => {
 
     const onSubmit = async () => {
         try {
+            setLoading(true)
             const data: ContactType = {
                 age: parseInt(age!),
                 firstName: firstName!,
@@ -48,8 +51,11 @@ const ContactDetail = (props: mainProps) => {
                     break;
             }
             await dispatch(contactAction.getList());
+            setLoading(false)
+
             props.navigation.goBack()
         } catch (error) {
+            setLoading(false)
 
             Alert.alert(
                 "Oops,There Is Some Error",
@@ -59,11 +65,16 @@ const ContactDetail = (props: mainProps) => {
     }
     const onDelete = async () => {
         try {
+            setLoading(true)
+
             await contactService.remove(contact?.id)
             await dispatch(contactAction.getList());
             props.navigation.goBack()
+            setLoading(false)
 
         } catch (error) {
+            setLoading(false)
+
             Alert.alert(
                 "Oops,There Is Some Error",
                 error.message
@@ -73,6 +84,7 @@ const ContactDetail = (props: mainProps) => {
     return (
         <View style={styles.mainContainer}>
             <ScrollView>
+                <LoadingModal visible={loading}></LoadingModal>
                 <View style={styles.avatarContainer}>
                     <Avatar
                         type="url"
