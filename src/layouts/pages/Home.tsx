@@ -30,7 +30,6 @@ interface mainProps {
 
    const getContacts = async ()=>{
     const contacts = await contactService.list();
-    console.log(contacts);
     
     setContacts(contacts);
    }
@@ -40,10 +39,10 @@ interface mainProps {
    },[]);
 
    const onChooseContact = (contact:ContactType)=>{
-       props.navigation.push('ContactDetail', {contact});
+       props.navigation.push('ContactDetail', {contact, type: 'edit'});
    }
    const onAddContact = ()=>{
-        props.navigation.push('ContactDetail');
+        props.navigation.push('ContactDetail', {type: 'add'});
    }
    const renderContactCard = ({item, index}: {item: ContactType; index: number}) => {
     return <ContactCard data={item} key={index} onClick={onChooseContact} />;

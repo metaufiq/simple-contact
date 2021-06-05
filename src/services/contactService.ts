@@ -3,7 +3,6 @@ import ContactType from "../config/types/domain/ContactType";
 
 const list = async ()=>{
     const res = await service.Contact.get('');
-    console.log(res);
     
     return res.data.data; 
 }
@@ -20,7 +19,9 @@ const edit = async (params: ContactType)=>{
         photo: params.photo,
         age: params.age,
     }
+    
     const res = await service.Contact.put(`/${params.id}`, data);
+    
     return res.data.data; 
 }
 

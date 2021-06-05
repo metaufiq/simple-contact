@@ -1,15 +1,18 @@
 import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import React, { useState } from 'react'
 import CustomTextInput from "../atoms/CustomTextInput";
 import ContactType from "../../config/types/domain/ContactType";
 import Avatar from "../atoms/Avatar";
 import { ScrollView } from "react-native-gesture-handler";
+import BottomButtonCard from "../molecules/BottomButtonCard";
+import contactService from "../../services/contactService";
 
+interface routeParams { contact?: ContactType, type: 'add' | 'edit' }
 interface mainProps {
     navigation: StackNavigationProp<any, any>;
-    route: RouteProp<Record<any, { contact?: ContactType }>, any>;
+    route: RouteProp<Record<any, routeParams>, any>;
 }
 const ContactDetail = (props: mainProps) => {
 
@@ -18,7 +21,27 @@ const ContactDetail = (props: mainProps) => {
     const [firstName, setFirstName] = useState(contact && contact.firstName);
     const [lastName, setLastName] = useState(contact && contact.lastName);
     const [age, setAge] = useState(contact && contact.age.toString());
-
+    const label = props.route.params.type === 'edit' ? 'EDIT CONTACT' : 'ADD CONTACT'
+    
+    const onSubmit = async () => {
+        try {
+            const data: ContactType = {
+                age: parseInt(age!),
+                firstName: firstName!,
+                lastName: lastName!,
+                photo: photo!,
+                id: contact!.id
+            }
+            
+            const res = props.route.params.type === 'edit' ? await contactService.edit(data) : contactService.add(data);
+            
+        } catch (error) {
+            Alert.alert(
+                "Error",
+                error
+            );
+        }
+    }
     return (
         <View style={styles.mainContainer}>
             <ScrollView>
@@ -50,6 +73,10 @@ const ContactDetail = (props: mainProps) => {
                     value={age}
                 />
             </ScrollView>
+            <BottomButtonCard
+                    label={label}
+                    onClick={onSubmit}
+                ></BottomButtonCard>
         </View>
     )
 }
