@@ -4,10 +4,11 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from 'react'
 import CustomTextInput from "../atoms/CustomTextInput";
 import ContactType from "../../config/types/domain/ContactType";
+import Avatar from "../atoms/Avatar";
 
 interface mainProps {
     navigation: StackNavigationProp<any, any>;
-    route: RouteProp<Record<any, {contact?: ContactType}>, any>;
+    route: RouteProp<Record<any, { contact?: ContactType }>, any>;
 }
 const ContactDetail = (props: mainProps) => {
 
@@ -18,6 +19,12 @@ const ContactDetail = (props: mainProps) => {
     const [age, setAge] = useState(contact && contact.age.toString());
     return (
         <View style={styles.mainContainer}>
+            <View style={styles.avatarContainer}>
+                <Avatar
+                    type="url"
+                    size={100}
+                    value={contact?.photo} />
+            </View>
             <CustomTextInput
                 title="Photo (url)"
                 onChangeText={setPhoto}
@@ -47,6 +54,10 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         paddingHorizontal: 10,
+        alignContent: 'center'
+    },
+    avatarContainer:{
+        paddingVertical: 20
     }
 })
 
