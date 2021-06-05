@@ -20,6 +20,7 @@ const ContactDetail = (props: mainProps) => {
             />
             <CustomTextInput
                 title="Age"
+                keyboardType="numeric"
             />
         </View>
     )
