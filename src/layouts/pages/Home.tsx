@@ -16,8 +16,12 @@ import React, { useEffect, useState } from 'react';
      StyleSheet,
    View,
  } from 'react-native';
+import { useSelector } from 'react-redux';
+import contactAction from '../../actions/contactAction';
 import ContactType from '../../config/types/domain/ContactType';
 import contactService from '../../services/contactService';
+import { RootType } from '../../store';
+import { useThunkDispatch } from '../../utils/hooks';
 import FAB from '../atoms/FAB';
 import ContactCard from '../molecules/ContactCard';
 
@@ -26,13 +30,13 @@ interface mainProps {
     route: RouteProp<any, any>;
 }
  const Home = (props: mainProps) => {
-   const [contacts, setContacts] = useState();
-
+   const contacts = useSelector((state:RootType)=> state.contactReducer.contactList);
+   const dispatch  = useThunkDispatch();
    const getContacts = async ()=>{
-    const contacts = await contactService.list();
-    
-    setContacts(contacts);
+
+    await dispatch(contactAction.getList());
    }
+
 
    useEffect(()=>{
     getContacts();
